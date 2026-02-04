@@ -442,6 +442,43 @@
         observer.observe(el);
       });
     }
+    const audio = document.getElementById('main-audio');
+    const playBtn = document.getElementById('play-pause');
+    const pIcon = document.getElementById('p-icon');
+    const progBar = document.getElementById('progress-bar');
+    const progArea = document.getElementById('progress-area');
+    const disc = document.getElementById('music-disc-container');
+
+    playBtn.onclick = () => {
+      if(audio.paused) {
+        audio.play();
+        pIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+        disc.classList.add('rotating-disc');
+      } else {
+        audio.pause();
+        pIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+        disc.classList.remove('rotating-disc');
+      }
+    };
+
+    audio.ontimeupdate = (e) => {
+      const { duration, currentTime } = e.srcElement;
+      progBar.style.width = `${(currentTime / duration) * 100}%`;
+      document.getElementById('current').innerText = formatTime(currentTime);
+      if(duration) document.getElementById('duration').innerText = formatTime(duration);
+    };
+
+    progArea.onclick = (e) => {
+      audio.currentTime = (e.offsetX / progArea.clientWidth) * audio.duration;
+    };
+
+    function changeTime(val) { audio.currentTime += val; }
+    function formatTime(t) {
+      let m = Math.floor(t / 60);
+      let s = Math.floor(t % 60);
+      return `${m}:${s < 10 ? '0'+s : s}`;
+    }
+    
 
     // Timer Logic
     function startCounter() {
@@ -555,6 +592,7 @@
 
   </script>
 </body>
+
 
 
 </html>
