@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ar" dir="rtl" class="h-full">
 <head>
   <meta charset="UTF-8">
@@ -8,105 +8,245 @@
   <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
   
   <style>
-    body { box-sizing: border-box; }
+    body { box-sizing: border-box; scroll-behavior: smooth; }
     * { font-family: 'Tajawal', sans-serif; }
     .handwritten { font-family: 'Aref Ruqaa', serif; }
     
-    /* حركات الأنيميشن */
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes float {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-20px) rotate(5deg); }
-    }
-    @keyframes heartbeat {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-    }
-    @keyframes floatHeart {
-      0% { opacity: 1; transform: translateY(0) scale(1); }
-      100% { opacity: 0; transform: translateY(-100px) scale(0.5); }
-    }
+    /* Animations */
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } }
+    @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+    @keyframes rotateDisc { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
     .fade-in-up { animation: fadeInUp 1s ease-out forwards; }
     .float-animation { animation: float 6s ease-in-out infinite; }
     .heartbeat { animation: heartbeat 1.5s ease-in-out infinite; }
+    .rotating-disc { animation: rotateDisc 8s linear infinite; }
     
-    .scroll-reveal {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .scroll-reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .scroll-reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+    .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
     
-    .floating-heart {
-      position: fixed;
-      pointer-events: none;
-      animation: floatHeart 4s ease-out forwards;
-      z-index: 100;
-    }
+    .gradient-bg { background: linear-gradient(135deg, #2d1f2f 0%, #1a1218 50%, #2d1f2f 100%); }
+    .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+    .romantic-gradient { background: linear-gradient(135deg, #e8b4b8 0%, #d4a5a5 50%, #c9a0a0 100%); }
     
-    /* الألوان والخلفيات */
-    .gradient-bg {
-      background: linear-gradient(135deg, #2d1f2f 0%, #1a1218 50%, #2d1f2f 100%);
-    }
-    .glass-card {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .romantic-gradient {
-      background: linear-gradient(135deg, #e8b4b8 0%, #d4a5a5 50%, #c9a0a0 100%);
-    }
+    .password-screen.hidden { display: none; }
+    .main-content.hidden { display: none; }
     
-    input:focus { outline: none; }
+    /* Custom Slider Styles */
+    #progress-bar { transition: width 0.1s linear; }
     
-    .password-screen { transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
-    .password-screen.hidden {
-      opacity: 0;
-      transform: scale(0.95);
-      pointer-events: none;
-      display: none;
-    }
-    
-    .main-content { transition: opacity 1s ease-out; }
-    .main-content.hidden { opacity: 0; pointer-events: none; display: none; }
-    
-    .counter-number { transition: transform 0.3s ease-out; }
-    .counter-number:hover { transform: scale(1.1); }
-    
-    /* تخصيص شريط التمرير */
     ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #1a1218; }
     ::-webkit-scrollbar-thumb { background: #e8b4b8; border-radius: 3px; }
   </style>
 </head>
 
 <body class="h-full gradient-bg text-white overflow-x-hidden">
 
-  <div id="password-screen" class="password-screen fixed inset-0 z-50 flex items-center justify-center gradient-bg">
+  <div id="password-screen" class="fixed inset-0 z-50 flex items-center justify-center gradient-bg">
     <div class="text-center px-6 fade-in-up">
-      <div class="float-animation mb-8">
-        <svg class="w-20 h-20 mx-auto text-pink-300" viewbox="0 0 24 24" fill="currentColor">
-          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-        </svg>
+      <div class="float-animation mb-8 text-pink-300">
+        <svg class="w-20 h-20 mx-auto" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
       </div>
       <h1 class="handwritten text-4xl md:text-5xl text-pink-200 mb-4">افتحي هديتك يا روحي ❤️</h1>
-      <p class="text-pink-300/80 text-lg mb-10">الموقع ده معمول ليكي انتي وبس 😌</p>
-      
       <div class="glass-card rounded-2xl p-8 max-w-sm mx-auto">
-        <input type="password" id="password-input" placeholder="كلمة السر 🔐" class="w-full bg-white/10 border border-pink-300/30 rounded-xl px-6 py-4 text-center text-lg text-white placeholder-pink-300/50 mb-4 focus:border-pink-300 transition-all">
+        <input type="password" id="password-input" placeholder="كلمة السر 🔐" class="w-full bg-white/10 border border-pink-300/30 rounded-xl px-6 py-4 text-center text-white mb-4 focus:border-pink-300 transition-all outline-none">
         <p id="error-message" class="text-red-300 text-sm mb-4 hidden">كلمة السر غلط يا حبيبتي 💔</p>
-        <button id="enter-btn" class="w-full romantic-gradient text-white font-bold py-4 px-8 rounded-xl text-lg hover:opacity-90 transition-all transform hover:scale-105 active:scale-95"> دخول 💕 </button>
+        <button id="enter-btn" class="w-full romantic-gradient text-white font-bold py-4 rounded-xl hover:scale-105 active:scale-95 transition-all"> دخول 💕 </button>
       </div>
     </div>
   </div>
 
+  <div id="main-content" class="hidden opacity-0 transition-opacity duration-1000">
+    
+    <section class="min-h-screen flex flex-col items-center justify-center px-6 text-center">
+      <div class="scroll-reveal mb-8 text-6xl">💕</div>
+      <h2 class="scroll-reveal handwritten text-4xl text-pink-200 mb-6">يا احلى حاجة في حياتي...</h2>
+      <p class="scroll-reveal text-xl text-pink-100/90 leading-relaxed max-w-lg">كل يوم بحبك أكتر من اللي قبله، ومعاك حاسس بأمان ملوش زيه 🤍</p>
+    </section>
+
+    <section class="min-h-screen flex items-center justify-center px-6 py-20">
+      <div class="scroll-reveal text-center max-w-md w-full">
+        <p class="text-pink-200 text-xl mb-8">الأغنية اللي بتفكرني بيكي 🎶</p>
+        <div class="glass-card rounded-3xl p-8 relative overflow-hidden">
+          <div class="w-32 h-32 mx-auto mb-6 rounded-full romantic-gradient flex items-center justify-center shadow-lg" id="music-disc-container">
+            <span class="text-5xl" id="music-emoji">🎵</span>
+          </div>
+          <audio id="main-audio" src="music.mp3"></audio>
+          
+          <div class="bg-white/5 rounded-2xl p-4 border border-white/10">
+            <div class="w-full bg-gray-700 h-1.5 rounded-full mb-2 cursor-pointer" id="progress-area">
+              <div id="progress-bar" class="bg-pink-400 h-full rounded-full w-0"></div>
+            </div>
+            <div class="flex justify-between text-[10px] text-pink-300/70 mb-4">
+              <span id="current">0:00</span>
+              <span id="duration">0:00</span>
+            </div>
+            
+            <div class="flex items-center justify-center gap-8">
+              <button onclick="changeTime(-10)" class="text-pink-200/70 hover:text-white">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.5 11.25l4.5-3.5v7l-4.5-3.5zm-5 0l4.5-3.5v7l-4.5-3.5z"/></svg>
+              </button>
+              
+              <button id="play-pause" class="w-16 h-16 rounded-full romantic-gradient flex items-center justify-center shadow-xl hover:scale-110 transition-transform">
+                <svg id="p-icon" class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+              
+              <button onclick="changeTime(10)" class="text-pink-200/70 hover:text-white">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M11.5 11.25l-4.5-3.5v7l4.5-3.5zm5 0l-4.5-3.5v7l4.5-3.5z"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="min-h-screen flex items-center justify-center px-6">
+      <div class="scroll-reveal text-center w-full max-w-lg">
+        <h3 class="handwritten text-3xl text-pink-200 mb-10">بقالنا مع بعض:</h3>
+        <div class="glass-card rounded-3xl p-8 grid grid-cols-3 gap-4">
+          <div class="p-4"><span id="days" class="text-4xl block font-bold text-pink-100">0</span><span class="text-xs opacity-60">يوم</span></div>
+          <div class="p-4"><span id="hours" class="text-4xl block font-bold text-pink-100">0</span><span class="text-xs opacity-60">ساعة</span></div>
+          <div class="p-4"><span id="minutes" class="text-4xl block font-bold text-pink-100">0</span><span class="text-xs opacity-60">دقيقة</span></div>
+        </div>
+        <p class="mt-8 text-pink-300/80 handwritten text-xl">27 نوفمبر 2024 ❤️</p>
+      </div>
+    </section>
+
+    <section class="min-h-screen flex items-center justify-center px-6">
+      <div class="scroll-reveal text-center">
+        <div class="w-72 h-72 md:w-96 md:h-96 mx-auto rounded-2xl overflow-hidden border-4 border-white/10 shadow-2xl relative">
+          <img src="img.png" alt="Love" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+        </div>
+        <p class="handwritten text-2xl text-pink-200 mt-6">أجمل صدفة في عمري ❤️</p>
+      </div>
+    </section>
+
+    <section class="min-h-screen flex items-center justify-center px-6 text-center">
+      <div class="scroll-reveal">
+        <button id="gift-btn" class="romantic-gradient px-10 py-5 rounded-2xl text-xl font-bold shadow-2xl hover:scale-110 transition-transform">دوسي هنا يا روحي 🎁</button>
+        <div id="gift-msg" class="hidden mt-10 glass-card p-8 rounded-3xl max-w-sm mx-auto">
+          <p class="handwritten text-2xl text-pink-200 mb-4">انتي أجمل رزق ربنا بعتهولي..</p>
+          <p class="opacity-80">ضحكتك هي اللي بتنور يومي، خليكي دايماً جنبي 💕</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="py-10 text-center opacity-30 text-xs">معمول بكل حب ليكي وبس 💕</footer>
+  </div>
+
+  <div id="hearts-container" class="fixed inset-0 pointer-events-none z-40"></div>
+
+  <script>
+    const startDate = new Date('2024-11-27');
+    
+    // --- Auth Logic ---
+    const passInput = document.getElementById('password-input');
+    const enterBtn = document.getElementById('enter-btn');
+    
+    function unlock() {
+      if(passInput.value === '123') {
+        document.getElementById('password-screen').classList.add('hidden');
+        const main = document.getElementById('main-content');
+        main.classList.remove('hidden');
+        setTimeout(() => { 
+            main.style.opacity = '1';
+            initApp();
+        }, 50);
+      } else {
+        document.getElementById('error-message').classList.remove('hidden');
+      }
+    }
+    enterBtn.onclick = unlock;
+
+    function initApp() {
+      startCounter();
+      createHearts();
+      initScroll();
+    }
+
+    // --- Music Player Logic ---
+    const audio = document.getElementById('main-audio');
+    const playBtn = document.getElementById('play-pause');
+    const pIcon = document.getElementById('p-icon');
+    const progBar = document.getElementById('progress-bar');
+    const progArea = document.getElementById('progress-area');
+    const disc = document.getElementById('music-disc-container');
+
+    playBtn.onclick = () => {
+      if(audio.paused) {
+        audio.play();
+        pIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+        disc.classList.add('rotating-disc');
+      } else {
+        audio.pause();
+        pIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+        disc.classList.remove('rotating-disc');
+      }
+    };
+
+    audio.ontimeupdate = (e) => {
+      const { duration, currentTime } = e.srcElement;
+      progBar.style.width = `${(currentTime / duration) * 100}%`;
+      document.getElementById('current').innerText = formatTime(currentTime);
+      if(duration) document.getElementById('duration').innerText = formatTime(duration);
+    };
+
+    progArea.onclick = (e) => {
+      audio.currentTime = (e.offsetX / progArea.clientWidth) * audio.duration;
+    };
+
+    function changeTime(val) { audio.currentTime += val; }
+    function formatTime(t) {
+      let m = Math.floor(t / 60);
+      let s = Math.floor(t % 60);
+      return `${m}:${s < 10 ? '0'+s : s}`;
+    }
+
+    // --- Counter Logic ---
+    function startCounter() {
+      setInterval(() => {
+        const diff = new Date() - startDate;
+        document.getElementById('days').innerText = Math.floor(diff / 86400000);
+        document.getElementById('hours').innerText = Math.floor((diff / 3600000) % 24);
+        document.getElementById('minutes').innerText = Math.floor((diff / 60000) % 60);
+      }, 1000);
+    }
+
+    // --- Helpers ---
+    function initScroll() {
+      const obs = new IntersectionObserver(ents => {
+        ents.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.scroll-reveal').forEach(el => obs.observe(el));
+    }
+
+    function createHearts() {
+      const container = document.getElementById('hearts-container');
+      setInterval(() => {
+        const h = document.createElement('div');
+        h.innerHTML = '❤️';
+        h.className = 'fixed text-pink-400/40 pointer-events-none transition-all duration-[4000ms]';
+        h.style.left = Math.random() * 100 + 'vw';
+        h.style.bottom = '-20px';
+        h.style.fontSize = (Math.random() * 20 + 10) + 'px';
+        container.appendChild(h);
+        setTimeout(() => {
+          h.style.transform = `translateY(-110vh) rotate(${Math.random() * 360}deg)`;
+          h.style.opacity = '0';
+        }, 10);
+        setTimeout(() => h.remove(), 4000);
+      }, 600);
+    }
+
+    document.getElementById('gift-btn').onclick = function() {
+      this.classList.add('hidden');
+      document.getElementById('gift-msg').classList.remove('hidden');
+    };
+  </script>
+</body>
+</html>
   <div id="main-content" class="main-content hidden">
     
     <section class="min-h-screen flex flex-col items-center justify-center px-6 py-20 relative">
@@ -364,4 +504,5 @@
   </script>
 </body>
 </html>
+
 
