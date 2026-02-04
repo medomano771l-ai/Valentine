@@ -100,7 +100,39 @@
         </div>
       </div>
     </section>
+    <section class="min-h-screen flex items-center justify-center px-6 py-20 relative overflow-hidden">
+  <div class="absolute w-96 h-96 bg-pink-500/10 rounded-full blur-[120px] -z-10"></div>
 
+  <div class="scroll-reveal text-center max-w-2xl w-full">
+    <h3 class="handwritten text-3xl text-pink-200 mb-12">عندي ليكي رسالة صغيرة.. ✨</h3>
+    
+    <div id="letter-container" class="relative cursor-pointer group">
+      <div id="envelope" class="glass-card p-10 rounded-3xl border-2 border-pink-300/20 shadow-2xl transition-all duration-700 hover:scale-105 flex flex-col items-center">
+        <div class="text-6xl mb-6 float-animation">✉️</div>
+        <p class="text-pink-100 text-lg">اضغطي علشان تفتحي الجواب</p>
+        <div class="mt-4 w-12 h-1 px-1 bg-pink-400/30 rounded-full"></div>
+      </div>
+
+      <div id="letter-content" class="hidden opacity-0 glass-card p-8 md:p-12 rounded-3xl border-2 border-pink-200/30 shadow-[0_0_50px_rgba(232,180,184,0.2)] transform scale-95 transition-all duration-1000">
+        <div class="text-right space-y-6">
+          <span class="text-4xl">✍️</span>
+          <h4 class="handwritten text-3xl text-pink-200 border-b border-pink-300/20 pb-4">حبيبتي وأغلى ما عندي..</h4>
+          <div class="handwritten text-xl md:text-2xl text-pink-50 leading-loose">
+            <p>كنت عايز أقولك إن وجودك في حياتي هو أكبر نعمة ربنا رزقني بيها. انتي مش بس حبيبتي، انتي المكان اللي بهرب فيه من كل الدنيا وبحس فيه إني مطمن.</p>
+            <p>ضحكتك بتخلي أي يوم صعب يمر بسلام، وعينيكي فيها حكايات بتخليني أحبك كل ثانية من أول وجديد.</p>
+            <p>خليكي دايماً جنبي، لأن الدنيا من غيرك ناقصة، ومعاكي كاملة ومستقرة. بحبك جداً ❤️</p>
+          </div>
+          <div class="pt-6 text-left">
+            <p class="handwritten text-2xl text-pink-300 italic">لأبد الآبدين.. مخلصك للأبد</p>
+          </div>
+        </div>
+        
+        <button onclick="toggleLetter(event)" class="mt-8 text-pink-300/50 hover:text-pink-300 text-sm underline transition-all">إغلاق الرسالة</button>
+      </div>
+    </div>
+  </div>
+    </section>
+    
     <section class="flex items-center justify-center px-6 py-12">
       <div class="scroll-reveal text-center w-full max-w-lg">
         <h3 class="handwritten text-3xl text-pink-200 mb-10">بقالنا مع بعض:</h3>
@@ -501,9 +533,64 @@
         }
       }, 2000);
     }
+    const envelope = document.getElementById('envelope');
+const letterContent = document.getElementById('letter-content');
+const letterContainer = document.getElementById('letter-container');
+
+function toggleLetter(e) {
+  e.stopPropagation(); // منع تداخل الضغطات
+  
+  if (letterContent.classList.contains('hidden')) {
+    // فتح الرسالة
+    envelope.classList.add('opacity-0', 'scale-50', 'absolute');
+    setTimeout(() => {
+      envelope.classList.add('hidden');
+      letterContent.classList.remove('hidden');
+      setTimeout(() => {
+        letterContent.classList.add('opacity-100', 'scale-100');
+        // حركة قلوب صغيرة عند فتح الجواب
+        for(let i=0; i<15; i++) { createMiniHeart(); }
+      }, 50);
+    }, 500);
+  } else {
+    // إغلاق الرسالة
+    letterContent.classList.remove('opacity-100', 'scale-100');
+    setTimeout(() => {
+      letterContent.classList.add('hidden');
+      envelope.classList.remove('hidden', 'absolute');
+      setTimeout(() => {
+        envelope.classList.remove('opacity-0', 'scale-50');
+      }, 50);
+    }, 500);
+  }
+}
+
+envelope.addEventListener('click', toggleLetter);
+
+// دالة قلوب إضافية عند فتح الرسالة
+function createMiniHeart() {
+  const h = document.createElement('div');
+  h.innerHTML = '❤️';
+  h.className = 'absolute text-pink-400 pointer-events-none z-50';
+  h.style.left = '50%';
+  h.style.top = '50%';
+  h.style.transition = 'all 1.5s ease-out';
+  letterContainer.appendChild(h);
+  
+  const moveX = (Math.random() - 0.5) * 400;
+  const moveY = (Math.random() - 0.5) * 400;
+  
+  setTimeout(() => {
+    h.style.transform = `translate(${moveX}px, ${moveY}px) scale(0) rotate(${Math.random()*360}deg)`;
+    h.style.opacity = '0';
+  }, 50);
+  setTimeout(() => h.remove(), 1500);
+}
+    
   </script>
 </body>
 </html>
+
 
 
 
