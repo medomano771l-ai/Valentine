@@ -534,10 +534,10 @@
       }, 2000);
     }
     const envelope = document.getElementById('envelope');
-const letterContent = document.getElementById('letter-content');
-const letterContainer = document.getElementById('letter-container');
+    const letterContent = document.getElementById('letter-content');
+    const letterContainer = document.getElementById('letter-container');
 
-function toggleLetter(e) {
+    function toggleLetter(e) {
   e.stopPropagation(); // منع تداخل الضغطات
   
   if (letterContent.classList.contains('hidden')) {
@@ -568,7 +568,7 @@ function toggleLetter(e) {
 envelope.addEventListener('click', toggleLetter);
 
 // دالة قلوب إضافية عند فتح الرسالة
-function createMiniHeart() {
+    function createMiniHeart() {
   const h = document.createElement('div');
   h.innerHTML = '❤️';
   h.className = 'absolute text-pink-400 pointer-events-none z-50';
@@ -582,14 +582,15 @@ function createMiniHeart() {
   
   setTimeout(() => {
     h.style.transform = `translate(${moveX}px, ${moveY}px) scale(0) rotate(${Math.random()*360}deg)`;
-    h.style.opacity = '0';
-  }, 50);
-  setTimeout(() => h.remove(), 1500);
-}
+     h.style.opacity = '0';
+     }, 50);
+     setTimeout(() => h.remove(), 1500);
+    }
     
   </script>
 </body>
 </html>
+
 
 
 
